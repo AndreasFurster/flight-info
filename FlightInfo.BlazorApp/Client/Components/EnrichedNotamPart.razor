@@ -1,0 +1,36 @@
+﻿@using System.Drawing
+@using FlightInfo.BlazorApp.Shared.Models
+
+@if(Part != null) 
+{
+    <span class="enriched-notam-part" style="background-color: @ColorToHex(Part.Color);" title="@Part.Value">
+
+        @if (Part.NotamParts != null)
+        {
+            if(Part.Notam.MakeReadable)
+            {
+                @Part.ReadableValue   
+            }
+
+            // Recursion 💪🏻
+            foreach(var part in Part.NotamParts)
+            {
+                <EnrichedNotamPart Part="part" />
+            }
+        }
+        else
+        {
+            <span style="padding: 0 3px;">@Part.DisplayValue()</span>
+        }
+    </span>
+}
+
+@code {
+    [Parameter]
+    public NotamPart? Part { get; set; }
+
+    private string ColorToHex(Color c)
+    {
+        return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+    }
+}

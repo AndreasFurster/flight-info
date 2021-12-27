@@ -1,0 +1,23 @@
+﻿@using FlightInfo.BlazorApp.Shared.Models
+
+@if (Notam != null)
+{
+    <div class="notam">
+        @if(Notam.NotamParts != null)
+        {
+            foreach (var part in Notam.NotamParts)
+            {
+                <EnrichedNotamPart Part="part" />
+            }
+        }
+        else
+        {
+            <div>Notam does not have any parts.</div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Notam? Notam { get; set; }
+}

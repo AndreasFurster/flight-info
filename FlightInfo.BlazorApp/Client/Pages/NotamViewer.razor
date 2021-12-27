@@ -1,0 +1,46 @@
+﻿@page "/notam-viewer"
+@using FlightInfo.BlazorApp.Client.Components
+@using FlightInfo.BlazorApp.Shared.Models
+
+<PageTitle>Notam Viewer</PageTitle>
+
+<h2>Input Notam</h2>
+<EditForm Model="notam" OnValidSubmit="ParseNotam">
+    <DataAnnotationsValidator />
+    <ValidationSummary /> 
+
+    <InputTextArea DisplayName="Notam" @bind-Value="notam.NotamInput" class="form-control" rows="10" />
+
+    <div class="form-check">
+      <InputCheckbox @bind-Value="notam.MakeReadable" class="form-check-input" id="make-readable-cb" />
+      <label class="form-check-label" for="make-readable-cb">
+        Make Readable
+      </label>
+    </div>
+    
+    <button type="submit">Submit</button>
+</EditForm>
+
+
+@if (notam.IsParsed) 
+{
+    <h2>Result</h2>
+    <EnrichedNotam Notam="notam" />
+}
+
+@code {
+    private Notam notam = new()
+    {
+        NotamInput = "A1234/06 NOTAMR A1212/06 \nQ)EGTT/QMXLC/IV/NBO/A/000/999/5129N00028W005 \nA)EGLL\nB)0609050500\nC)0704300500\nE)DUE WIP TWY B SOUTH CLSD BTN 'F' AND 'R'. TWY 'R' CLSD BTN 'A' AND 'B' AND DIVERTED VIA NEW GREEN CL AND BLUE EDGE LGT. CTN ADZ"
+    };
+
+    protected override void OnInitialized()
+    {
+        notam.ParseInput();
+    }
+
+    public void ParseNotam()
+    {
+        notam.ParseInput();
+    }
+}
